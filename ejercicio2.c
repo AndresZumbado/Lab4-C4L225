@@ -1,52 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-main(int argc, char *argv[]){
-    FILE * archivo = fopen('arg + 1', "r");
-    FILE * escrito = fopen("miarchivo.txt", "w");
-    if (archivo == NULL) {
-        printf("No se pudo crear el archivo\n");
+int main(int argc, char *argv[]) {
+    if (argc < 4) {
+        printf("Debe incluir nombre de archivo, palabra a sustituiy remplazo\n");
         return 1;
-    }
+    };
+
+    FILE *archivo = fopen(argv[1], "r");
+    FILE *escrito = fopen("miarchivo.txt", "w");
+
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo %s\n", argv[1]);
+        return 2;
+    };
+
+    if (escrito == NULL) {
+        printf("No se pudo crear el archivo de salida\n");
+        fclose(archivo);
+        return 3;
+    };
+
     char carac;
-    *palabra = (char*)malloc( sizeof(char) );
-    if (palabra == NULL){return 2};
-    int len = 0
-    *escribir = (char*)malloc( sizeof(char) );
-    while(carac == fgetc(archivo) != EOF) {
+    char *palabra = (char*)malloc( sizeof(char) );
+    if (palabra == NULL) {
+        return 4;
+    };
+    int len = 0;
+    while( (carac = fgetc(archivo)) != EOF) {
         if( isalpha(carac) ) {
-            realloc(palabra, (len+1) * sizeof(char))
-            *(palabra + len) = carac
-            len++
-        }; 
-        else {
-            for(int i = 0; i < len) {
-                igual = 1
-                if(*(palabra+i) != arg[1][i]){
-                    igual = 0
-                };
+            palabra = realloc(palabra, (len+1) * sizeof(char));
+            if(palabra == NULL){
+                printf("Error de memoria");
+                return 5;
             };
-            if(igual = 1){
-                realloc(palabra, strlen(argv[1]) * sizeof(char) );
-                for(int i = 0; i < strlen(argv[1]); i++) {
-                    *(palabra + i) = argv[1][i];
-                len = strlen(argv[1]);
+            *(palabra + len) = carac;
+            len++;
+        } else {
+            int igual = 1;
+            if(len != strlen(argv[2]) ) {
+                igual = 0;
+            } else {
+                for(int i = 0; i < len; i++) {
+                    if(*(palabra+i) != argv[2][i]){
+                        igual = 0;
+                    };
                 };
+            }
+            if(igual == 1){
+                palabra = realloc(palabra, strlen(argv[3]) * sizeof(char));
+                for(int i = 0; i < strlen(argv[3]); i++) {
+                    *(palabra + i) = argv[3][i];
+                };
+                len = strlen(argv[3]);
             };
+        
         for(int i = 0; i < len; i++){
-            fprintf(escrito, "%c", *(palabra + i))
+            fprintf(escrito, "%c", *(palabra + i) );
         };
-        len = 0
-        realloc(palabra, sizeof(char) )
+        fprintf(escrito, "%c", carac );
+        len = 0;
         };
     };
     for(int i = 0; i < len; i++){
-            fprintf(escrito, "%c", *(palabra + i))
+            fprintf(escrito, "%c", *(palabra + i));
         };
     
-    fclose(archivo)
-    fclose(escrito)
+    fclose(archivo);
+    fclose(escrito);
     free(palabra);
     palabra = NULL;
+    return 0;
 }
 

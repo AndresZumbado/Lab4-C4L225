@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #define FILAS 3
-#define COLUMNAS 4
+#define COLUMNAS 5
 
 /* La funcion unidimensionalizar toma un puntero doble de una matriz y devuelve un puntero 
  hacia un arreglo unidimensional con los valores de la matriz  */
@@ -43,11 +43,11 @@ void bubble_sort(int * ptr_array) {
 
 int main() {
     //Se define la matriz con la que se trabaja
-    int matriz[3][4] = 
+    int matriz[FILAS][COLUMNAS] = 
     {
-    {1,6,8,7},
-    {1,3,5,9},
-    {2,0,5,0}
+    {2,1,4,6,7},
+    {8,5,0,7,8},
+    {9,2,3,5,0},
     };
 
     //Imprimir matriz a trabajar
@@ -87,12 +87,36 @@ int main() {
     //Unidimensionalizacion, ordenado del arreglo e impresion en pantall
     int *ptr_array = unidimensionalizar(ptr_matriz);
     bubble_sort(ptr_array);
-    printf("Finalmente el arreglo unidimensional ordenado:\n");
+    printf("El arreglo unidimensional ordenado:\n");
     printf("{");
     for(int i = 0; i < FILAS * COLUMNAS; i++) {
         printf("%d, ", *(ptr_array + i));
     };
     printf("}");
+
+        // Reconstruir la matriz a partir del arreglo unidimensional
+    int matriz_reconstruida[FILAS][COLUMNAS];
+    int cont = 0;
+    for(int i = 0; i < FILAS; i++) {
+        for(int j = 0; j < COLUMNAS; j++) {
+            matriz_reconstruida[i][j] = *(ptr_array + cont);
+            cont++;
+        };
+    };
+
+    // Imprimir la matriz reconstruida
+    printf("\nMatriz reconstruida a partir del arreglo ordenado:\n");
+    for(int i = 0; i < FILAS; i++) {
+        printf("{");
+        for(int j = 0; j < COLUMNAS; j++) {
+            printf("%d,", matriz_reconstruida[i][j]);
+        };
+        printf("}\n");
+    };
+
+
+    
+
     //Liberar memoria
     for(int i = 0; i < FILAS; i++) {
 	    free(*(ptr_matriz + i));
